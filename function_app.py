@@ -1,9 +1,12 @@
-import azure.functions as func
+import logging
+from azure.functions import func
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     name = req.params.get('name', 'there')
     return func.HttpResponse(f"Hello {name}!", status_code=200)
 
+
+app = func.HttpResponse
 
 @app.route(route="hello", auth_level=func.AuthLevel.FUNCTION)
 def hello(req: func.HttpRequest) -> func.HttpResponse:
@@ -25,4 +28,3 @@ def hello(req: func.HttpRequest) -> func.HttpResponse:
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
              status_code=200
         )
-    
