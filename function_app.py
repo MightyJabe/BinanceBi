@@ -15,7 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     secretKey = os.environ['BINANCE_API_SECRET'].encode()
 
     # Example: Fetching account information
-    url = 'https://api.binance.com/api/v3/account'
+    url = 'https://fapi.binance.com/fapi/v2/account'
 
     # Generate a timestamp in milliseconds
     timestamp = int(time.time() * 1000)
