@@ -42,7 +42,7 @@ def account_info(req: func.HttpRequest) -> func.HttpResponse:
 def trade_history(req: func.HttpRequest) -> func.HttpResponse:
     # Retrieve symbol and limit from the request query parameters
     symbol = req.params.get('symbol')
-    limit = req.params.get('limit', '1000')  # Example default limit
+    limit = req.params.get('limit')  # Example default limit
     # Endpoint for fetching user's trade history
     url = 'https://fapi.binance.com/fapi/v1/userTrades'
     params = generate_params()
