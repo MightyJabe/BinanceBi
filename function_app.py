@@ -22,7 +22,7 @@ def generate_params():
     return params
 
 # Function to send a request to the Binance API and handle the response
-def send_request(url, apiKey, params):
+def send_request(url, params):
     headers = {'X-MBX-APIKEY': apiKey}
     try:
         response = requests.get(url, headers=headers, params=params)
@@ -47,5 +47,6 @@ def trade_history(req: func.HttpRequest) -> func.HttpResponse:
     url = 'https://fapi.binance.com/fapi/v1/userTrades'
     params = generate_params()
     # Add specific parameters for the trade history request
-    params.update({'symbol': symbol, 'limit': limit}) if symbol else params
+    if symbol:
+        params.update({'symbol': symbol, 'limit': limit})
     return send_request(url, params)
