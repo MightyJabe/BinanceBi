@@ -4,4 +4,4 @@
 
 azure-functions
 requests
-pyodbc==4.0.32
+pyodbc
