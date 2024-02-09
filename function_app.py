@@ -52,27 +52,25 @@ def trade_history(req: func.HttpRequest) -> func.HttpResponse:
         params.update({'symbol': symbol, 'limit': limit})
     return send_request(url, params)
 
+@app.route(route="test_db")
+def test_db(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request to test SQL connection.')
 
-def get_db_connection():
+    # Define your connection string
     server = os.environ["DB_SERVER"]
     database = os.environ["DB_NAME"]
     username = os.environ["DB_USER"]
     password = os.environ["DB_PASS"]
-    driver= '{ODBC Driver 17 for SQL Server}'
-    connection_string = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}'
-    cnxn = pyodbc.connect(connection_string)
-    return cnxn
-@app.route(route="test_db")
-def test_db(req: func.HttpRequest) -> func.HttpResponse:
+    driver= '{SQL Server}'
+    connection_string = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+
     try:
-        cnxn = get_db_connection()
-        cursor = cnxn.cursor()
-        # Simple query to test the connection
-        cursor.execute("SELECT @@VERSION")
-        row = cursor.fetchone()
-        if row:
-            return func.HttpResponse(f"Database connection successful. DB Version: {row[0]}", status_code=200)
-        else:
-            return func.HttpResponse("Failed to query database version.", status_code=500)
+        # Attempt to connect to the database
+        with pyodbc.connect(connection_string, timeout=30) as conn:
+            logging.info("Successfully connected to the database")
+            return func.HttpResponse("Successfully connected to the Azure SQL database", status_code=200)
+
     except Exception as e:
-        return func.HttpResponse(f"Database connection failed: {str(e)}", status_code=500)
+        # If connection fails, return the error message
+        logging.error(f"Failed to connect to the database: {e}")
+        return func.HttpResponse(f"Failed to connect to the database: {e}", status_code=500)
