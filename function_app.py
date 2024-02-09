@@ -61,7 +61,7 @@ def test_db(req: func.HttpRequest) -> func.HttpResponse:
     database = os.environ["DB_NAME"]
     username = os.environ["DB_USER"]
     password = os.environ["DB_PASS"]
-    driver= '{SQL Server}'
+    driver= '{ODBC Driver 18 for SQL Server}'
     connection_string = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
 
     try:
